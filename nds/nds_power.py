@@ -233,6 +233,15 @@ def run_query_stream(input_prefix,
 
     spark_session = session_builder.appName(
         app_name).getOrCreate()
+
+    # Get and display configured options
+    try:
+        configured_options = spark_session.sparkContext.getConf().getAll()
+        for key, value in configured_options:
+            print(f"{key}: {value}")
+    except Exception as e:
+        print("Error while printing conf", str(e))
+
     if hive_external:
         spark_session.catalog.setCurrentDatabase(input_prefix)
 
